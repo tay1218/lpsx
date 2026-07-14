@@ -1,0 +1,19 @@
+# Maven 编译产物
+target/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.bak
