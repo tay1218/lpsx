@@ -17,7 +17,7 @@ public class LeadServiceImpl implements LeadService {
     private CustomerLeadMapper customerLeadMapper;
 
     @Override
-    public void submit(Integer userId, String childGrade, String targetCurriculum, String parentPhone) {
+    public void submit(Integer userId, String parentName, String childGrade, String targetSchool, String parentPhone) {
         // 防重：24 小时内同手机号是否已提交
         int count = customerLeadMapper.countByPhone24h(parentPhone);
         if (count > 0) {
@@ -26,8 +26,9 @@ public class LeadServiceImpl implements LeadService {
 
         CustomerLead lead = new CustomerLead();
         lead.setUserId(userId);
+        lead.setParentName(parentName);
         lead.setChildGrade(childGrade);
-        lead.setTargetCurriculum(targetCurriculum);
+        lead.setTargetSchool(targetSchool);
         lead.setParentPhone(parentPhone);
         lead.setStatus(0); // 0-待跟进
 

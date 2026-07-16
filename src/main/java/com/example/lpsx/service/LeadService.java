@@ -13,5 +13,5 @@ public interface LeadService {
      * @param targetCurriculum 目标课程体系
      * @param parentPhone      联系电话
      */
-    void submit(Integer userId, String childGrade, String targetCurriculum, String parentPhone);
+    void submit(Integer userId, String parentName, String childGrade, String targetSchool, String parentPhone);
 }

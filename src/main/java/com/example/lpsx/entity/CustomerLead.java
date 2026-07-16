@@ -26,8 +26,8 @@ public class CustomerLead {
     /** 当前年级 */
     private String childGrade;
 
-    /** 目标课程体系 */
-    private String targetCurriculum;
+    /** 目标院校 */
+    private String targetSchool;
 
     /** 联系电话 */
     private String parentPhone;

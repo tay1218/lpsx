@@ -1,5 +1,7 @@
 package com.example.lpsx.service;
 
+import com.example.lpsx.entity.School;
+
 import java.util.List;
 
 /**
@@ -8,10 +10,7 @@ import java.util.List;
 public interface AssessmentService {
 
     /**
-     * 根据用户答题结果，匹配度最高的 3 所学校 ID
-     *
-     * @param answers 用户答案 [行政区, 课程体系, 学费预算, 学段]
-     * @return 匹配的学校 ID 列表
+     * 根据用户答题结果，返回匹配度最高的 3 所学校
      */
-    List<Integer> match(List<String> answers);
+    List<School> match(List<String> answers);
 }

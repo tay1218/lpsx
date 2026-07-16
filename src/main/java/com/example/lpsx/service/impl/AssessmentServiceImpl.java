@@ -19,7 +19,7 @@ public class AssessmentServiceImpl implements AssessmentService {
     private SchoolMapper schoolMapper;
 
     @Override
-    public List<Integer> match(List<String> answers) {
+    public List<School> match(List<String> answers) {
         String district = answers.get(0);   // 行政区
         String curriculum = answers.get(1); // 课程体系
         String budget = answers.get(2);     // 学费预算
@@ -66,11 +66,13 @@ public class AssessmentServiceImpl implements AssessmentService {
             }
         }
 
-        // 按积分降序，取 Top 3
-        return scoreMap.entrySet().stream()
+        // 按积分降序，取 Top 3 学校
+        List<Integer> topIds = scoreMap.entrySet().stream()
                 .sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
                 .limit(3)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+        if (topIds.isEmpty()) return Collections.emptyList();
+        return schoolMapper.selectBatchIds(topIds);
     }
 }

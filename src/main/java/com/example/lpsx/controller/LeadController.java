@@ -20,10 +20,11 @@ public class LeadController {
     @PostMapping("/submit")
     public Result<Void> submit(@RequestBody Map<String, String> body,
                                @RequestAttribute("userId") Integer userId) {
+        String parentName = body.get("parent_name");
         String childGrade = body.get("child_grade");
-        String targetCurriculum = body.get("target_curriculum");
+        String targetSchool = body.get("target_school");
         String parentPhone = body.get("parent_phone");
-        leadService.submit(userId, childGrade, targetCurriculum, parentPhone);
+        leadService.submit(userId, parentName, childGrade, targetSchool, parentPhone);
         return Result.success();
     }
 }

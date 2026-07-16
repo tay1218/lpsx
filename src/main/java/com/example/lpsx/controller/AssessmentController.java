@@ -1,6 +1,7 @@
 package com.example.lpsx.controller;
 
 import com.example.lpsx.common.result.Result;
+import com.example.lpsx.entity.School;
 import com.example.lpsx.service.AssessmentService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class AssessmentController {
     private AssessmentService assessmentService;
 
     @PostMapping("/match")
-    public Result<List<Integer>> match(@RequestBody Map<String, List<String>> body) {
+    public Result<List<School>> match(@RequestBody Map<String, List<String>> body) {
         return Result.success(assessmentService.match(body.get("answers")));
     }
 }

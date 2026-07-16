@@ -1,22 +1,26 @@
 package com.example.lpsx.service.impl;
 
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.lpsx.common.exception.BusinessException;
 import com.example.lpsx.entity.User;
 import com.example.lpsx.mapper.UserMapper;
 import com.example.lpsx.service.AuthService;
 import com.example.lpsx.utils.JwtUtils;
 import com.example.lpsx.utils.WxDecryptUtils;
+
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 认证服务实现
@@ -42,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String wxLogin(String code) {
+        try {
         // 1. 调用微信 jscode2session 接口
         String url = "https://api.weixin.qq.com/sns/jscode2session";
         Map<String, Object> params = new HashMap<>();
@@ -56,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 2. 检查微信返回结果
         if (result.containsKey("errcode") && result.getInt("errcode") != 0) {
-            throw new RuntimeException("微信登录失败: " + result.getStr("errmsg"));
+            throw new BusinessException("微信登录失败: " + result.getStr("errmsg"));
         }
 
         String openid = result.getStr("openid");
@@ -68,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
         if (user == null) {
             user = new User();
             user.setOpenid(openid);
+            user.setNickname("微信用户" + ThreadLocalRandom.current().nextInt(1000, 10000));
             userMapper.insert(user);
             log.info("新用户注册: userId={}, openid={}", user.getId(), openid);
         }
@@ -77,6 +83,12 @@ public class AuthServiceImpl implements AuthService {
 
         // 5. 生成 JWT
         return jwtUtils.createToken(user.getId());
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("微信登录异常", e);
+            throw new BusinessException("登录失败: " + e.getMessage());
+        }
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.example.lpsx.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.lpsx.entity.School;
-
-import java.util.List;
 
 /**
  * 学校服务
@@ -11,9 +11,9 @@ import java.util.List;
 public interface SchoolService {
 
     /**
-     * 多条件分页查询学校列表
+     * 多条件分页查询学校列表（支持按名称搜索）
      */
-    Page<School> listSchools(int page, int size, String city, String curriculum, String district, String grades);
+    Page<School> listSchools(int page, int size, String city, String curriculum, String district, String grades, String name);
 
     /**
      * 学校详情
